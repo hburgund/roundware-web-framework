@@ -14,10 +14,6 @@ export class Project {
     return `Roundware Project '${projectName}' (#${projectId})`;
   }
 
-  // getRecordingRadius() {
-  //   return recordingRadius;
-  // }
-
   connect(sessionId) {
     var path = "/projects/" + projectId + "/";
 
@@ -36,6 +32,11 @@ export class Project {
         that.location = {"latitude": data.latitude,
                          "longitude": data.longitude};
         that.maxRecordingLength = data.max_recording_length;
+        that.legalAgreement = data.legal_agreement;
+        that.outOfRangeMessage = data.out_of_range_message;
+        that.geoListenEnabled = data.geo_listen_enabled;
+        console.log(`geolisten = ${that.geoListenEnabled}`);
+        // console.log(`recordingRadius = ${recordingRadius}`);
         return sessionId;
       });
   }

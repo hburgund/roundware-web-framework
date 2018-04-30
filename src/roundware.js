@@ -77,19 +77,23 @@ class Roundware {
     this._stream      = options.stream      || new Stream(options);
     this._speaker     = options.speaker     || new Speaker(this._projectId,options);
     this._asset       = options.asset       || new Asset(this._projectId,options);
+    // this._uiConfig    = options.uiconfig    || this._project.uiconfig(this._projectId);
   }
 
   /** Initiate a connection to Roundware
    *  @return {Promise} - Can be resolved in order to get the audio stream URL, or rejected to get an error message; see example above **/
   connect() {
-    let that = this;
+    // from Mike add_asset work...not sure if useful
+    // let that = this;
+    //
+    // this._geoPosition.connect(function(newCoords) {
+    //   // want to start this process as soon as possible, as it can take a few seconds
+    //   that._stream.update(newCoords);
+    // });
+    // data sent to update() needs to be in correct format...don't think coords is?
+    this._geoPosition.connect((coords) => this._stream.update(coords)); // want to start this process as soon as possible, as it can take a few seconds
 
-    this._geoPosition.connect(function(newCoords) {
-      // want to start this process as soon as possible, as it can take a few seconds
-      that._stream.update(newCoords);
-    });
-
-    logger.info("Initializing Roundware for project ID #" + this._projectId);
+    console.log("Initializing Roundware for project ID #" + this._projectId);
 
     return this._user.connect().
       then(this._session.connect).
@@ -159,6 +163,7 @@ class Roundware {
     }
 
     let envelope = new Envelope(this._sessionId,this._apiClient,this._geoPosition);
+    console.log(data);
 
     return envelope.connect().
       then(function() {

@@ -3,7 +3,7 @@ import { Project } from "../src/project";
 describe("Project",() => {
   var project, storedCallback;
 
-  var responseData = { 
+  var responseData = {
     name: "ACME",
     pub_date: "2017-05-22",
     audio_format: "MP3"
@@ -36,14 +36,14 @@ describe("Project",() => {
   it(".connect() makes an API request to /projects/#",() => {
     project.connect(300);
     expect(apiClient.get).
-      toHaveBeenCalledWith("/projects/100",{ session_id: 300 });
+      toHaveBeenCalledWith("/projects/100/",{ session_id: 300 });
   });
 
-  it("connect() returns a promise for the connect request",() => { 
+  it("connect() returns a promise for the connect request",() => {
     expect(project.connect(333)).toBe(requestPromise);
   });
 
-  it("connect() attaches a callback to the connect request promise that returns the given sessionID",() => { 
+  it("connect() attaches a callback to the connect request promise that returns the given sessionID",() => {
     project.connect(333);
     expect(storedCallback(responseData)).toBe(333);
   });

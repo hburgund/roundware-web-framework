@@ -39,13 +39,20 @@ export class Envelope {
     }
 
     let formData = new FormData();
-    let coordinates = this._geoPosition.getLastCoords();
-    console.log(coordinates);
+    // if data includes lat/lon, use those values, otherwise, use browsers coordinates
+    if ('latitude' in data && 'longitude' in data) {
+      formData.append('latitude',data.latitude);
+      formData.append('longitude',data.longitude);
+    } else {
+      let coordinates = this._geoPosition.getLastCoords();
+      console.log(coordinates);
+      console.log(data);
+      formData.append('latitude',coordinates.latitude);
+      formData.append('longitude',coordinates.longitude);
+    }
 
     formData.append('session_id',this._sessionId);
     formData.append('file',audioData);
-    formData.append('latitude',coordinates.latitude);
-    formData.append('longitude',coordinates.longitude);
 
     if ('tag_ids' in data) {
       formData.append('tag_ids',data.tag_ids);

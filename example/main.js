@@ -3,7 +3,7 @@ var roundwareProjectId = 1; // corresponds to a project setup in the Roundware s
 
 var roundware;
 var streamPlayer, audioSource, pauseButton, playButton, killButton,
-    skipButton, replayButton, tagIds, recordButton;
+    skipButton, replayButton, tagIds, recordButton, setBrowserLocation;
 var assetMarkers = [];
 var listenMap, speakMap;
 var firstplay = false; // ultimately will be set to true initially to handle iOS playback properly
@@ -110,6 +110,17 @@ function ready() {
   );
   console.log(roundware._assetData);
   console.log(`project recording radius = ${roundware._project.recordingRadius}`);
+  // // element.addEventListener("click", function(){ alert("Hello World!"); });
+  // document.getElementById("setBrowserLocation").addEventListener( "click", function(){
+  //   console.log("setting browser location in map");
+  //   navigator.geolocation.getCurrentPosition(function(position) {
+  //     speakMap.setCenter({lat:position.coords.latitude, lng:position.coords.longitude});
+  //     var newPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  //     contributor.setPosition(newPosition);
+  //     document.getElementById("speakLatitude").value = contributor.getPosition().lat();
+  //     document.getElementById("speakLongitude").value = contributor.getPosition().lng();
+  //   });
+  // });
 }
 
 function displayListenTags() {
@@ -402,9 +413,10 @@ $(function startApp() {
   updateButton    = $("#update");
 
   // Speak elements
-  speakLatitude  = $("#speakLatitude");
-  speakLongitude = $("#speakLongitude");
-  recordButton   = $("#record");
+  setBrowserLocation = $("#setBrowserLocation");
+  speakLatitude      = $("#speakLatitude");
+  speakLongitude     = $("#speakLongitude");
+  recordButton       = $("#record");
 
   roundware.connect().
     then(ready).
@@ -451,6 +463,29 @@ function setupSpeakMap() {
   // TODO: change to location sensed by browser
   var initialLocation = {lat: roundware._project.location.latitude,
                          lng: roundware._project.location.longitude};
+  if (!navigator.geolocation){
+    console.log("no geolocation available");
+  }
+  else {
+    console.log("geolocation available");
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = {lat: position.coords.latitude,
+                         lng: position.coords.longitude};
+      console.log(`initial browser determined position = ${initialLocation}`);
+      console.log(initialLocation);
+      // do_something(position.coords.latitude, position.coords.longitude);
+    });
+
+    var watchID = navigator.geolocation.watchPosition(function(position) {
+      speakMap.setCenter({lat:position.coords.latitude, lng:position.coords.longitude});
+      var newPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      contributor.setPosition(newPosition);
+      document.getElementById("speakLatitude").value = contributor.getPosition().lat();
+      document.getElementById("speakLongitude").value = contributor.getPosition().lng();
+    });
+  }
+
   speakMap = new google.maps.Map(document.getElementById('speakMap'), {
     zoom: 4,
     center: initialLocation
@@ -463,6 +498,23 @@ function setupSpeakMap() {
   google.maps.event.addListener(contributor, "dragend", function(event) {
     document.getElementById("speakLatitude").value = contributor.getPosition().lat();
     document.getElementById("speakLongitude").value = contributor.getPosition().lng();
-    listenMap.setCenter(contributor.getPosition());
+    speakMap.setCenter(contributor.getPosition());
+  });
+
+  // element.addEventListener("click", function(){ alert("Hello World!"); });
+  document.getElementById("setBrowserLocation").addEventListener( "click", function(){
+    console.log("setting browser location in map");
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        console.log("current browser position determined");
+        speakMap.setCenter({lat:position.coords.latitude, lng:position.coords.longitude});
+        var newPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        contributor.setPosition(newPosition);
+        document.getElementById("speakLatitude").value = contributor.getPosition().lat();
+        document.getElementById("speakLongitude").value = contributor.getPosition().lng();
+      });
+    } else {
+      console.log("no location available");
+    }
   });
 }

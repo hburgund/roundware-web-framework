@@ -48,8 +48,8 @@ describe("ApiClient",() => {
     it(".get() makes GET requests with URL params",(done) => {
       client.get(streamsPath,data,sendOptions).then(done);
 
-      expect(jQueryDummy.ajax).toHaveBeenCalledWith(streamsUrl,jasmine.objectContaining({ 
-        method: "GET", 
+      expect(jQueryDummy.ajax).toHaveBeenCalledWith(streamsUrl,jasmine.objectContaining({
+        method: "GET",
         data: jsonData,
         xyz: 123
       }));
@@ -64,9 +64,9 @@ describe("ApiClient",() => {
     it(".post() makes POST requests, serialized with JSON",(done) => {
       client.post(streamsPath,data,sendOptions).then(done);
 
-      expect(jQueryDummy.ajax).toHaveBeenCalledWith(streamsUrl,jasmine.objectContaining({ 
+      expect(jQueryDummy.ajax).toHaveBeenCalledWith(streamsUrl,jasmine.objectContaining({
         method: "POST",
-        contentType: 'application/json',
+        contentType: 'x-www-form-urlencoded',
         data: jsonData
       }));
     });
@@ -80,9 +80,9 @@ describe("ApiClient",() => {
     it(".patch() makes PATCH requests",(done) => {
       client.patch(streamsPath,data,sendOptions).then(done);
 
-      expect(jQueryDummy.ajax).toHaveBeenCalledWith(streamsUrl,jasmine.objectContaining({ 
+      expect(jQueryDummy.ajax).toHaveBeenCalledWith(streamsUrl,jasmine.objectContaining({
         method: "PATCH",
-        contentType: 'application/json',
+        contentType: 'x-www-form-urlencoded',
         data: jsonData
       }));
     });
@@ -104,7 +104,7 @@ describe("ApiClient",() => {
       client.setAuthToken("ABC123");
 
       expect(jQueryDummy.ajaxSetup).toHaveBeenCalledWith(jasmine.objectContaining({
-        headers: jasmine.objectContaining({ 
+        headers: jasmine.objectContaining({
           Authorization: "token ABC123"
         })
       }));

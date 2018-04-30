@@ -55,7 +55,7 @@ export class ApiClient {
     options = Object.assign({},options);
 
     if (!options.timeout) {
-      options.timeout = 30000; // 30 seconds, arbitrary
+      options.timeout = 100000; // 100 seconds, less than 120 default server requires to keep stream alive
     }
 
     // If you specify a contentType, we assume you already have formatted your data

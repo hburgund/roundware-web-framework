@@ -22,6 +22,9 @@
         height: 200px;
         width: 300px;
       }
+      /* #countdown {
+        font-size: 2em
+      } */
       ul { list-style: none; }
       li { margin: 1em; }
       audio { display: block; }
@@ -70,6 +73,10 @@
     <button id="record" style="display: none;">Record</button>
     <h3>Select a location for your contribution</h3>
     <div>
+      <button id="setBrowserLocation" style="">Set to Browser Location</button>
+    </div>
+    <br>
+    <div>
       <label>Contribution Latitude</label>
       <input id='speakLatitude' value="1"/>
     </div>
@@ -110,6 +117,8 @@
     <script type="text/javascript" src="WavAudioEncoder.js"></script>
     <script type="text/javascript" src="recording.js"></script>
     <script type="text/javascript" src="recorder.min.js"></script>
+    <!-- <script type="text/javascript" src="wavesurfer/wavesurfer.js"></script> -->
+    <!-- <script type="text/javascript" src="wavesurfer/wavesurfer.umd.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/wavesurfer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/plugin/wavesurfer.timeline.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/plugin/wavesurfer.microphone.min.js"></script>

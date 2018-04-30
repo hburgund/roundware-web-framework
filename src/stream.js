@@ -1,6 +1,6 @@
 import { logger } from "./shims";
 
-const defaultHeartbeatIntervalSeconds = 60;
+const defaultHeartbeatIntervalSeconds = 10;
 let heartbeatIntervalId;
 
 /** Establishes an audio stream with the Roundware server, and notifies Roundware of events like tag
@@ -39,6 +39,7 @@ export class Stream {
    * @see pause()
    * **/
   play(sessionId,initialLocation,firstPlayCallback = (streamAudioUrl) => {}) {
+    console.log(`initialLocation = ${initialLocation.latitude},${initialLocation.longitude}`);
     if (this._streamApiPath) {
       let resumePlayingPath = `${this._streamApiPath}resume/`;
       return this._apiClient.post(resumePlayingPath);
